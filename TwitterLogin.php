@@ -7,11 +7,22 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 class TwitterLogin {
 
   public function login() {
+
+    if ($this->isLoggedIn()) {
+      goHome();
+    }
+
     if (!isset($_GET['oauth_token']) || !isset($_GET['oauth_verifier'])) {
       $this->_redirectFlow();
     } else {
       $this->_callbackFlow();
     }
+  }
+
+  public function isLoggedIn() {
+    // var_dump($_SESSION['me']);
+    // exit;
+    return isset($_SESSION['me']) && !empty($_SESSION['me']);
   }
 
   private function _callbackFlow() {
@@ -36,6 +47,7 @@ class TwitterLogin {
     // echo "tokens saved";
     // exit;
 
+    session_regenerate_id(true); // session hijack
     $_SESSION['me'] = $user->getUser($tokens['user_id']);
 
     unset($_SESSION['oauth_token']);
