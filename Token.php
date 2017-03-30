@@ -12,7 +12,7 @@ class Token {
     if (
       !isset($_SESSION['token']) ||
       !isset($_POST[$tokenKey]) ||
-      !isset($_SESSION['token']) !== !isset($_POST[$tokenKey])
+      $_SESSION['token']) !== $_POST[$tokenKey]
     ) {
       throw new \Exception('invalid token!');
     }
